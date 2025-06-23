@@ -16,6 +16,8 @@
     Toute page visible par l'utilisateur passe forcément par ici.
 */
 
+/** */
+
 // Endroit ou on va décider de ranger un fichier, et par la suite on ne va plus appeler un fichier physique mais
 // un fichier virtuel qui sera sur une étagère virtuelle en l'occurence
 // On décide que ce fichier appartient  au namespace "App" - Cela permet de mieux organiser les fichiers PHP par groupes logiques

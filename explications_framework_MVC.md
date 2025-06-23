@@ -13,7 +13,7 @@ CTRL + SHIFT + V
     - [✅ Programmation orientée objet (POO)](#-programmation-orientée-objet-poo)
   - [✍️ Structure du framework et responsabilité de chaque couche de l'application](#️-structure-du-framework-et-responsabilité-de-chaque-couche-de-lapplication)
     - [✅ index.php](#-indexphp)
-    - [✅ public](#-public)v
+    - [✅ public](#-public)v'"
     - [✅ App](#-app)
     - [✅ Controller](#-controller)
     - [✅ Model](#-model)
@@ -21,6 +21,10 @@ CTRL + SHIFT + V
       - [⭐ Managers](#-managers)
     - [✅ View](#-view)
 
+
+Framework: (cadre de travail)
+Un ensemble  d’outils, de fichiers, de règles et de bonne pratiques pour aider à créer plus facilement un site web ou une application.
+(c’est un kit de construction)
 
 ## ✍️ Rappel des notions
 ### ✅ Design pattern (patron de conception)
@@ -38,7 +42,7 @@ use App\Entity;
 ```
 
 2. **Classe Abstraite** et **Héritage** : une classe abstraite est une *classe qui ne peut pas être instanciée* directement mais qui peut contenir des méthodes abstraites et des méthodes concrètes. Les méthodes abstraites sont des méthodes déclarées mais non implémentées dans la classe abstraite, ce qui signifie que les classes filles doivent les implémenter.
-L'héritage est un concept de la programmation orientée objet qui permet à une classe (appelée classe fille ou sous-classe) d'hériter des propriétés et des méthodes d'une autre classe (appelée classe parent ou superclasse). Cela permet la réutilisation du code et la création de hiérarchies de classes.
+L'héritage est un concept  de la programmation orientée objet qui permet à une classe (appelée classe fille ou sous-classe) d'hériter des propriétés et des méthodes d'une autre classe (appelée classe parent ou superclasse). Cela permet la réutilisation du code et la création de hiérarchies de classes.
 
 ``` php
 /* app/AbstractController.php */

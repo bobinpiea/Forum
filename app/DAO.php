@@ -12,11 +12,14 @@ namespace App;
  */
 abstract class DAO{
 
-    private static $host   = 'mysql:host=127.0.0.1;port=3306';
-    private static $dbname = 'forummvc_v2';
-    private static $dbuser = 'root';
-    private static $dbpass = '';
+    // On prépare toutes les informations nécessaires pour se connecter à la base de données
+    // Ce sont des variables privées qui servent uniquement dans cette classe
+    private static $host   = 'mysql:host=127.0.0.1;port=8889'; // l'adresse de la base (localhost ici)
+    private static $dbname = 'forum_pa';  // le nom de la base mettre forum_pa
+    private static $dbuser = 'root';  // nom d'utilisateur
+    private static $dbpass = 'root'; // Surement root à l'avenir
 
+    
     private static $bdd;
 
     /**
