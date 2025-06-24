@@ -1,3 +1,5 @@
+/*  Toute la feuille de style, donc commune à toutes les pages  */
+
 * {
     margin: 0;
     padding: 0;
@@ -5,24 +7,376 @@
 }
 
 h1 {
-    color: rgb(0, 122, 156);
+    color: rgb(7, 5, 0);
 }
 
-/*  LAYOUT */
+/*  CSSD DU LAYOUT (donc commun à toutes les pages) */
 
 /*  HEADER */
 
+/* 1 : Header en général  */
+
+header {
+    background-color: #1A1A1A;  
+    padding: 10px 20px;
+}
+
+nav {
+    display: flex;                      
+    align-items: center;               
+    justify-content: space-between;    
+    flex-wrap: wrap;
+}
+
+/* 2 : le logo */
+
+#logo img {
+    height: 60px;      
+    width: auto; 
+    display: block;
+}
+
+/* 3 : Le menu de gauche */
+
+#nav-left {
+    display: flex;
+    margin-left: 0;        
+    margin-right: auto;
+}
+
+#nav-left a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    padding: 10px;
+    border-right: 1px solid white;
+    margin-left: 8px;
+}
+
+#nav-left a:last-child {
+    border-right: none; 
+}
+
+#nav-left a:hover {
+    color: #B31942;
+}
+
+
+/*  4 : menu de droite */
+
+#nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+}
+
+#nav-right a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+#nav-right a:hover {
+    color: #0B3D0B;
+}
+
+/*  5 CONNEXION & INSCRIPTION */
+
+#nav-right .bouton-connexion {
+    background-color: #444;       
+    color: #D4AF37;     
+    padding: 8px 16px;
+    border-radius: 10px;         
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#nav-right .bouton-connexion:hover {
+    background-color: #D4AF37;  
+    color: white;
+}
+
+/* Style pour le bouton Inscription */
+.bouton-inscription {
+    color: #D4AF37;
+    padding: 8px 16px;
+    font-weight: bold;
+}
+
+.bouton-inscription:hover {
+    color: white;
+    background-color: #D4AF37;
+    padding: 8px 16px;
+    border-radius: 10px;
+}
 
 /*  FOOTER */
 
+/*  Section 1 */
 
-/*  Div 3  */
-.texte_fond_de_page {
+.center{
+    text-align: center;
+}
+
+.logo {
+    height: 60px;      
+    width: auto;
+    display: block;
+    margin: 0 auto;
+  
+}
+
+/*  Réseaux sociaux */
+
+/*  Toute la section 1 de mon footer */
+.footer1 {
+    background-color: #1A1A1A;       
+    color: white;                    
+    display: flex;                  
+    justify-content: space-around;  
+    flex-wrap: wrap;                
+    padding: 20px 20px;              
+    text-align: left;
+}
+
+/*  la colonne 1 */
+
+.reseaux {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.reseaux a {
+    color: white;
+    font-size: 20px;
     background-color: #1A1A1A;
+    border-radius: 50%;
+    padding-right: 8px;
 }
 
-.texte_fond_de_page p {
-    background-color: #FFFFFF;
-
+.reseaux a:hover {
+    color: #B31942;
 }
+
+/* Style pour chaque colonne */
+.footer1 > div {
+    flex: 1;                       
+    min-width: 200px;                
+    max-width: 250px;               
+    margin: 10px;                   
+}
+
+/* Paragraphes à l'intérieur */
+.footer1 p {
+    margin: 8px 0;                   
+    font-size: 14px;                 
+    line-height: 1.5;                
+}
+
+/* Titres des colonnes 2, 3, 4 (pas la 1re) */
+.footer1 > div:not(.presentation) p:first-child {
+    font-weight: bold;              
+    font-size: 16px;               
+    margin-bottom: 10px;    
+    text-transform: uppercase;
+}
+
+
+/* ROOMS Pour aligner logo + texte sur une ligne */
+
+.room {
+    display: flex;
+    align-items: center; /* aligne verticalement */
+    gap: 10px;           
+    margin-bottom: 10px; 
+}
+
+/* Taille des logos dans les rooms */
+.room img {
+    height: 40px;
+    width: auto;
+}
+
+/*  Section 2 du footer */
+.footer2 {
+    background-color: #B31942; 
+    color: white;              
+    padding: 15px 30px;        
+    display: flex;            
+    justify-content: space-between; 
+    align-items: center;      
+}
+
+/*  Section 3  */
+.footer3 {
+    background-color: #1A1A1A;  
+    color: white;               
+    text-align: center;         
+    padding: 20px;           
+    font-size: 16px;     
+    line-height: 1.6;       
+}
+
+
+/* ========== CSS DE LA PAGE D'ACCUEIL ========== */
+
+
+/*  SECTION 1 */
+
+.section1 {
+    background-image: url("../img/namur.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 600px;
+}
+
+.section1 {
+    padding: 40px 20px;
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+}
+
+/* Bannière rouge en haut */
+.banniere-rouge {
+    background-color: #B31942;
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    padding: 20px 30px;
+    border-radius: 15px;
+    display: inline-block;
+    margin-bottom: 40px;
+    opacity: 0.8;
+}
+
+/* Bloc vert principal */
+.bloc-evenement {
+    background-color: #0B3D0B;
+    color: white;
+    padding: 40px 30px;
+    border-radius: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+    text-align: left;
+    opacity: 0.9;
+}
+
+/* Chaque colonne */
+.colonne {
+    flex: 1;
+    min-width: 250px;
+}
+
+/* Titres de colonne */
+.colonne h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+/* Paragraphes et listes */
+.colonne p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.colonne ul {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    padding-left: 20px;
+}
+
+.colonne li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+
+/* Texte du bas + bouton */
+.bloc-bas {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    max-width: 1100px;
+    margin: 40px auto 0 auto;
+    padding: 0 20px;
+}
+
+/* Texte */
+.bloc-bas p {
+    font-size: 14px;
+    color: white;
+    line-height: 1.6;
+    text-align: right;
+    margin: 0 0 10px 0;
+}
+
+/* Bouton */
+.bloc-bas a {
+    background-color: #B31942;
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+/* Effet au survol */
+.bloc-bas a:hover {
+    background-color: #8f1436;
+}
+
+/* SECTION 2 - Publicité  */
+
+.section2 {
+    background-color: #1c1c1c; 
+    color: #f5c518; 
+    padding: 60px 20px;
+    text-align: center;
+    font-family: 'Raleway', sans-serif;
+}
+
+.titre-accroche {
+    font-size: 22px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.texte-accroche {
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 900px;
+    margin: 0 auto 30px auto;
+}
+
+.bloc-bouton {
+    margin-top: 20px;
+}
+
+.btn-jaune {
+    background-color: #f5c518;
+    color: #1c1c1c;
+    padding: 14px 28px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.btn-jaune:hover {
+    background-color: #d4a800;
+}
+
+
 

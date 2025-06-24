@@ -6,6 +6,7 @@ use App\AbstractController;
 use App\ControllerInterface;
 use Model\Managers\CategoryManager;
 use Model\Managers\TopicManager;
+use Model\Managers\MessageManager;
 
 class ForumController extends AbstractController implements ControllerInterface{
 
@@ -42,4 +43,30 @@ class ForumController extends AbstractController implements ControllerInterface{
             ]
         ];
     }
+
+    public function listMessagesByTopic($id) {
+        // création d'un objet pour gérer tous les messages
+        $messageManager = new MessageManager();
+        // Idem pour les topics
+        $topicManager = new TopicManager();
+
+        $topic = $topicManager->findOneById($id);
+        $messages = $messageManager->findMessagesByTopic($id);
+
+
+        return [
+            "view" => VIEW_DIR."forum/listMessages.php",
+            "meta_description" => "Liste des messages par topic : ".$topic,
+            "data" => [
+                "topic" => $topic,
+                "messages" => $messages
+            ]
+        ];
+    }
+
+
+
+
+
+
 }
