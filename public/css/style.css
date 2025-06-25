@@ -1,4 +1,4 @@
-/*  Toute la feuille de style, donc commune à toutes les pages  */
+/* ==========  Toute la feuille de style, donc commune à toutes les pages ========== */
 
 * {
     margin: 0;
@@ -10,7 +10,7 @@ h1 {
     color: rgb(7, 5, 0);
 }
 
-/*  CSSD DU LAYOUT (donc commun à toutes les pages) */
+/* ========== CSS DU LAYOUT (donc commun à toutes les pages) ========== */
 
 /*  HEADER */
 
@@ -222,161 +222,230 @@ nav {
 /* ========== CSS DE LA PAGE D'ACCUEIL ========== */
 
 
-/*  SECTION 1 */
+    /* -----  SECTION 1 ----- */
 
-.section1 {
-    background-image: url("../img/namur.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 600px;
-}
+        .section1 {
+            background-image: url("../img/namur.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 600px;
+        }
 
-.section1 {
-    padding: 40px 20px;
-    font-family: 'Raleway', sans-serif;
-    text-align: center;
-}
+        .section1 {
+            padding: 40px 20px;
+            font-family: 'Raleway', sans-serif;
+            text-align: center;
+        }
 
-/* Bannière rouge en haut */
-.banniere-rouge {
-    background-color: #B31942;
-    color: white;
-    font-size: 26px;
-    font-weight: bold;
-    padding: 20px 30px;
-    border-radius: 15px;
-    display: inline-block;
-    margin-bottom: 40px;
-    opacity: 0.8;
-}
+        /* Bannière rouge en haut */
 
-/* Bloc vert principal */
-.bloc-evenement {
-    background-color: #0B3D0B;
-    color: white;
-    padding: 40px 30px;
-    border-radius: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 30px;
-    text-align: left;
-    opacity: 0.9;
-}
+            .banniere-rouge {
+                background-color: #B31942;
+                color: white;
+                font-size: 26px;
+                font-weight: bold;
+                padding: 20px 30px;
+                border-radius: 15px;
+                display: inline-block;
+                margin-bottom: 40px;
+                opacity: 0.8;
+            }
 
-/* Chaque colonne */
-.colonne {
-    flex: 1;
-    min-width: 250px;
-}
+        /* Bloc vert principal */
 
-/* Titres de colonne */
-.colonne h3 {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: white;
-}
+            .bloc-evenement {
+                background-color: #0B3D0B;
+                color: white;
+                padding: 40px 30px;
+                border-radius: 20px;
+                max-width: 1200px;
+                margin: 0 auto;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                gap: 30px;
+                text-align: left;
+                opacity: 0.9;
+            }
 
-/* Paragraphes et listes */
-.colonne p {
-    margin-bottom: 15px;
-    line-height: 1.6;
-}
+        /* Chaque colonne */
 
-.colonne ul {
-    margin-top: 5px;
-    margin-bottom: 10px;
-    padding-left: 20px;
-}
+            .colonne {
+                flex: 1;
+                min-width: 250px;
+            }
 
-.colonne li {
-    margin-bottom: 10px;
-    line-height: 1.5;
-}
+        /* Titres de colonne */
+            .colonne h3 {
+                font-size: 20px;
+                margin-bottom: 20px;
+                color: white;
+            }
 
+        /* Paragraphes et listes */
+            .colonne p {
+                margin-bottom: 15px;
+                line-height: 1.6;
+            }
 
-/* Texte du bas + bouton */
-.bloc-bas {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    max-width: 1100px;
-    margin: 40px auto 0 auto;
-    padding: 0 20px;
-}
+            .colonne ul {
+                margin-top: 5px;
+                margin-bottom: 10px;
+                padding-left: 20px;
+            }
 
-/* Texte */
-.bloc-bas p {
-    font-size: 14px;
-    color: white;
-    line-height: 1.6;
-    text-align: right;
-    margin: 0 0 10px 0;
-}
-
-/* Bouton */
-.bloc-bas a {
-    background-color: #B31942;
-    color: white;
-    text-decoration: none;
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: 14px;
-    white-space: nowrap;
-}
-
-/* Effet au survol */
-.bloc-bas a:hover {
-    background-color: #8f1436;
-}
-
-/* SECTION 2 - Publicité  */
-
-.section2 {
-    background-color: #1c1c1c; 
-    color: #f5c518; 
-    padding: 60px 20px;
-    text-align: center;
-    font-family: 'Raleway', sans-serif;
-}
-
-.titre-accroche {
-    font-size: 22px;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-}
-
-.texte-accroche {
-    font-size: 18px;
-    line-height: 1.6;
-    max-width: 900px;
-    margin: 0 auto 30px auto;
-}
-
-.bloc-bouton {
-    margin-top: 20px;
-}
-
-.btn-jaune {
-    background-color: #f5c518;
-    color: #1c1c1c;
-    padding: 14px 28px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 16px;
-    display: inline-block;
-    transition: background-color 0.3s ease;
-}
-
-.btn-jaune:hover {
-    background-color: #d4a800;
-}
+            .colonne li {
+                margin-bottom: 10px;
+                line-height: 1.5;
+            }
 
 
+        /* Texte du bas + bouton */
+            .bloc-bas {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                max-width: 1100px;
+                margin: 40px auto 0 auto;
+                padding: 0 20px;
+            }
 
+        /* Texte */
+            .bloc-bas p {
+                font-size: 14px;
+                color: white;
+                line-height: 1.6;
+                text-align: right;
+                margin: 0 0 10px 0;
+            }
+
+        /* Bouton */
+            .bloc-bas a {
+                background-color: #B31942;
+                color: white;
+                text-decoration: none;
+                padding: 12px 20px;
+                border-radius: 10px;
+                font-weight: bold;
+                font-size: 14px;
+                white-space: nowrap;
+            }
+
+        /* Effet au survol */
+            .bloc-bas a:hover {
+                background-color: #B31942;
+            }
+
+    /* ----- SECTION 2 ----- Publicité  */
+
+            .section2 {
+                background-color: #1c1c1c; 
+                color: #f5c518; 
+                padding: 60px 20px;
+                text-align: center;
+                font-family: 'Raleway', sans-serif;
+            }
+
+            .titre-accroche {
+                font-size: 22px;
+                font-weight: bold;
+                text-transform: uppercase;
+                margin-bottom: 20px;
+            }
+
+            .texte-accroche {
+                font-size: 18px;
+                line-height: 1.6;
+                max-width: 900px;
+                margin: 0 auto 30px auto;
+            }
+
+            .bloc-bouton {
+                margin-top: 20px;
+            }
+
+            .btn-jaune {
+                background-color: #f5c518;
+                color: #1c1c1c;
+                padding: 14px 28px;
+                border-radius: 12px;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 16px;
+                display: inline-block;
+                transition: background-color 0.3s ease;
+            }
+
+            .btn-jaune:hover {
+                background-color: #d4a800;
+            }
+
+    /* ----- SECTION 3 : RESEAUX ----- */
+
+        .section3 {
+            background-color: #0B3D0B;
+            padding: 80px 20px;
+        }
+
+        /* Ligne Discord ou Facebook */
+            .bloc-reseau {
+                display: flex;
+                align-items: center;
+                max-width: 1100px;
+                margin: 0 auto 60px auto;
+            }
+
+        /* Colonne gauche : logo */
+            .logo-reseau {
+                flex: 1; /* moitié gauche */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .logo-reseau img {
+                width: auto;
+                max-width: 400px;
+                height: auto;
+            }
+
+        /* Colonne droite : texte + bouton */
+            .texte-reseau {
+                flex: 1; 
+                text-align: left;
+                padding: 0 20px;
+            }
+
+        .texte-reseau h3 {
+            color: white;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .texte-reseau p {
+            color: white;
+            font-size: 16px;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+    /* Bouton REJOINDRE */
+        .bouton-rejoindre {
+            background-color: #B31942;
+            color: white;
+            text-decoration: none;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+        .bouton-rejoindre:hover {
+            background-color: #8f1436;
+        }
+    
+    /* ----- SECTION 4 : RESEAUX ----- */
+    

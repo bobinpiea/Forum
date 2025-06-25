@@ -1,6 +1,3 @@
-<section>
-
-    <h1>Notre prochain rendez-vous poker</h1>
 
 
     <section>
@@ -72,6 +69,9 @@
      <p>Créer un compte</p>
 </section>
 
+mtn on va refaire il faut ajout un top
+
+
 <section>
     <div>
         <p>DISCORD</p>
@@ -97,3 +97,45 @@
         <p>Choisissez votre coach</p>
    </div>
 </section>
+
+
+
+public function addTopic($id) {
+    // On vérifie que le formulaire a été soumis (si tu ne veux pas le if, on peut l’enlever)
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+        // On récupère les champs du formulaire
+        $title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $message = filter_input(INPUT_POST, "message", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $userId = 1; // Pour le moment on met un user en dur (ex : user 1)
+
+        if ($title && $message) {
+            // On instancie le TopicManager
+            $topicManager = new \Model\Managers\TopicManager();
+
+            // On ajoute le nouveau topic
+            $newTopicId = $topicManager->add([
+                "title" => $title,
+                "category_id" => $id,
+                "user_id" => $userId,
+            ]);
+
+            // Ensuite, on insère le message de départ dans la table message
+            $messageManager = new \Model\Managers\MessageManager();
+            $messageManager->add([
+                "content" => $message,
+                "user_id" => $userId,
+                "topic_id" => $newTopicId
+            ]);
+
+            // Et on redirige vers la liste des topics de la catégorie
+            $this->redirectTo("forum", "listTopicsByCategory", $id);
+        }
+    }
+
+    // Afficher le formulaire si aucune donnée envoyée
+    return [
+        "view" => VIEW_DIR."forum/addTopic.php",
+        "meta_description" => "Formulaire d'ajout de topic"
+    ];
+}

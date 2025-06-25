@@ -43,10 +43,10 @@
                                     <span class="fas fa-user"></span>&nbsp;<?= App\Session::getUser() ?>
                                 </a>
                                 <a href="index.php?ctrl=security&action=logout">Déconnexion</a>
-                            <?php } else { ?>
+                            <?php } else { ?> 
+                           
                                 <a href="index.php?ctrl=forum&action=index">Liste des catégories</a>
                                 <a href="index.php?ctrl=forum&action=listTopics">Liste des topics</a> 
-                                <a href="index.php?ctrl=forum&action=listMessagesByTopic&id">Liste des messages</a>
                                     <!-- 5 : connexion et inscription -->
                                 <a class="bouton-connexion" href="index.php?ctrl=security&action=login">Connexion</a>
                                 <a class="bouton-inscription" href="index.php?ctrl=security&action=register">Inscription</a>

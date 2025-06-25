@@ -4,6 +4,7 @@
     <div class="banniere-rouge">Notre prochain événement</div>
 
     <!-- Bloc vert principal -->
+     
     <div class="bloc-evenement">
 
         <!-- Colonne gauche -->
@@ -72,4 +73,37 @@
     <div class="bloc-bouton">
         <a href="" class="btn-jaune">Créer un compte</a>
     </div>
+</section>
+
+<!-- Section 3 -->
+<section class="section3">
+    <!-- Bloc Discord -->
+        <div class="bloc-reseau">
+            <!-- Logo à gauche -->
+            <div class="logo-reseau">
+                <img src="public/img/discord.webp" alt="Logo Discord">
+            </div>
+
+            <!-- Texte et bouton à droite -->
+            <div class="texte-reseau">
+                <h3>DISCORD</h3>
+                <p>Rejoins-nous sur Discord pour échanger avec les coachs et les membres passionnés de la communauté.</p>
+                <a href="#" class="bouton-rejoindre">REJOINDRE</a>
+            </div>
+        </div>
+
+    <!-- Bloc Facebook -->
+        <div class="bloc-reseau">
+            <!-- Logo à gauche -->
+            <div class="logo-reseau">
+                <img src="public/img/facebook.webp" alt="Logo Facebook">
+            </div>
+
+            <!-- Texte et bouton à droite -->
+            <div class="texte-reseau">
+                <h3>GROUPE PRIVÉ FACEBOOK</h3>
+                <p>Accède aux dernières actus et stratégies directement dans notre groupe privé Facebook.</p>
+                <a href="#" class="bouton-rejoindre">REJOINDRE</a>
+            </div>
+        </div>
 </section>
