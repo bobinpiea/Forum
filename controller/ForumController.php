@@ -165,10 +165,7 @@ class ForumController extends AbstractController implements ControllerInterface{
         public function addTopicToCategory($id) {
         // 
         $title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        
-        // 
-        var_dump($title);
-        var_dump($id);
+    
         
         // 
         $topicManager = new \Model\Managers\TopicManager();
@@ -181,4 +178,16 @@ class ForumController extends AbstractController implements ControllerInterface{
 
         $this->redirectTo("forum", "listTopicsByCategory", $id);
     }
+
+public function addTopic($id) {
+    return [
+        "view" => VIEW_DIR."forum/addTopic.php",
+        "meta_description" => "Formulaire d'ajout de topic",
+        "data" => [
+            "category_id" => $id
+        ]
+    ];
+}
+
+
 }

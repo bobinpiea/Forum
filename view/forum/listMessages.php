@@ -4,7 +4,7 @@
     $messages = $result["data"]['messages']; 
 ?>
 
-// Si le topic existe on va l'afficher sinon ca ne serait pas le cas
+
 <?php if($topic): ?>
 
     <h1>Messages pour le topic : <?= $topic->getTitle() ?></h1>

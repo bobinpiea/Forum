@@ -1,38 +1,27 @@
 <?php
     // On récupère les données envoyées par le contrôleur
-// A relirepour mieux comprendre 
+// A relire pour mieux comprendre 
     $category = $result["data"]['category']; 
     $topics = $result["data"]['topics']; 
 ?>
 
 
 <h1>FORUM - Liste des topics : <?= $category->getName() ?></h1>
-
-
-<a href="index.php?ctrl=forum&action=addTopicSimple&id=<?= $category->getId() ?>">Ajouter un nouveau topic</a>
-
-
+       <!-- Lien vers le détail du topic -->
+<a href="index.php?ctrl=forum&action=addTopic&id=<?= $category->getId() ?>">Créer un nouveau topic</a>
 <?php foreach($topics as $topic) { ?>
-    <p>
-   
-        <a href="index.php?ctrl=forum&action=detailTopic&id=<?= $topic->getId() ?>">
-            <?= $topic->getTitle() ?>
-        </a>
-       
-        par <?= $topic->getUser()->getNickName() ?>
-        le <?= $topic->getCreationDate() ?>
-    </p>
+  <p>
+    <a href="index.php?ctrl=forum&action=detailTopic&id=<?= $topic->getId() ?>">
+        <?= $topic->getTitle() ?>
+    </a>
+    par 
+    <?php if ($topic->getUser()) : ?>
+        <?= $topic->getUser()->getNickName() ?>
+    <?php else : ?>
+        <em>Anonyme</em>
+    <?php endif; ?>
+    le <?= $topic->getCreationDate() ?>
+      <!--  Lien pour supprimer ce topic -->
+    <a href="index.php?ctrl=forum&action=deleteTopic&id=<?= $topic->getId() ?>">Supprimer</a>
+</p>
 <?php } ?>
-
-
-<?php
-    $category = $result["data"]["category"];
-?>
-
-
-<form action="index.php?ctrl=forum&action=addTopicToCategory&id=<?= $category->getId() ?>" method="post">
-    <label for="title"> Nouveau Topic:</label>
-    <input type="text" name="title" id="title" required>
-
-    <button type="submit">Valider</button>
-</form>

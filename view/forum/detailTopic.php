@@ -1,6 +1,6 @@
 <?php
-$topic = $result["data"]["topic"];
-$messages = $result["data"]["messages"];
+    $topic = $result["data"]["topic"];
+    $messages = $result["data"]["messages"];
 ?>
 
 <h1><?= $topic->getTitle() ?></h1>
