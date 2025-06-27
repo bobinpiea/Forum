@@ -1,7 +1,7 @@
 
 <form action="" method="post">
 
-    <!--écrire le nom de la catégorie -->
+    <!-- Formulaire  pour afficher  -->
     <label for="name">Nom de la catégorie :</label>
     <input type="text" name="name" id="name" required>
 

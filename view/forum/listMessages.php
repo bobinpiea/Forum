@@ -13,7 +13,7 @@
     // Pour chaque message du tableau $messages, on affiche les infos
     foreach($messages as $message ){ ?>
         <p>
-            <!-- Ce lien pourrait pointer vers le profil du user par exemple -->
+         
             <a href="index.php?ctrl=forum&action=listMessagesByTopic&id=<?= $topic->getId() ?>">
                 <?= $message->getContent() ?> 
             </a>

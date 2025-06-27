@@ -4,7 +4,7 @@
 ?>
 
 <h1> FORUM - Liste des catégories</h1>
-<!-- Lien pour créer une nouvelle catégorie -->
+<!-- Lien pour  une nouvelle catégorie -->
 <a href="index.php?ctrl=forum&action=addCategory">Créer une nouvelle catégorie</a>
 
 <?php
