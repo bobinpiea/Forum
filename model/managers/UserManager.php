@@ -10,16 +10,16 @@ use App\DAO;
 // Elle hérite de la classe Manager qui contient les fonctions de base (findAll, findOneById, etc.)
 class UserManager extends Manager{
 
-  
-    // A mieux comprendre !!!!
-    protected $className = "Model\\Entities\\User";
+    // On précise à quelle classe (entité POO) ce manager est lié
+    protected $className = "Model\\Entities\\User"; // double anti-slash \\ pour bien interpréter le chemin
+
     // On indique aussi à ce manager avec quelle table de la base il doit travailler
-    // Ici : la table 'user'
     protected $tableName = "user"; 
 
-    // Quand on crée un UserManager, on appelle le constructeur de la classe parent (Manager)
-    // Ce constructeur va connecter à la base de données (grâce à parent::connect())
+    // Quand on crée un UserManager, on appelle le constructeur de la classe parente (Manager)
+    // Ce constructeur initialise la connexion à la base de données
     public function __construct(){
         parent::connect();
     }
+    
 }

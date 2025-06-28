@@ -4,18 +4,21 @@ namespace Model\Entities;
 use App\Entity;
 
 /*
-    En programmation orientée objet, une classe finale (final class) est une classe que vous ne pouvez pas étendre, c'est-à-dire qu'aucune autre classe ne peut hériter de cette classe. En d'autres termes, une classe finale ne peut pas être utilisée comme classe parente.
+    En programmation orientée objet, une classe finale (final class) est une classe que vous ne pouvez pas étendre, 
+    c'est-à-dire qu'aucune autre classe ne peut hériter de cette classe. En d'autres termes, une classe finale ne peut 
+    pas être utilisée comme classe parente.
 */
 
 final class Topic extends Entity{
 
-    private $id; // ok 
-    private $title; //ok
-    private $user; //ok
-    private $category; // ok
-    private $creationDate; //ok
-    private $closed; //ok
+    private $id;
+    private $title;
+    private $creationDate;
+    private $closed;
+    private $category_id;
+    private $user_id;
 
+    // chaque entité aura le même constructeur grâce à la méthode hydrate (issue de App\Entity)
     public function __construct($data){         
         $this->hydrate($data);        
     }
@@ -55,36 +58,19 @@ final class Topic extends Entity{
     }
 
     /**
-     * Get the value of user
+     * Get the value of creationDate
      */ 
-    public function getUser(){
-        return $this->user;
+    public function getCreationDate(){
+        return $this->creationDate;
     }
 
     /**
-     * Set the value of user
+     * Set the value of creationDate
      *
      * @return  self
      */ 
-    public function setUser($user){
-        $this->user = $user;
-        return $this;
-    }
-
-    /**
-     * Get the value of category
-     */ 
-    public function getCategory(){
-        return $this->category;
-    }
-
-    /**
-     * Set the value of category
-     *
-     * @return  self
-     */ 
-    public function setCategory($category){
-        $this->category = $category;
+    public function setCreationDate($creationDate){
+        $this->creationDate = $creationDate;
         return $this;
     }
 
@@ -106,23 +92,61 @@ final class Topic extends Entity{
     }
 
     /**
-     * Get the value of creationDate
+     * Get the value of category_id
      */ 
-    public function getCreationDate(){
-        return $this->creationDate;
+    public function getCategoryId(){
+        return $this->category_id;
     }
 
     /**
-     * Set the value of creationDate
+     * Set the value of category_id
      *
      * @return  self
      */ 
-    public function setCreationDate($creationDate){
-        $this->creationDate = $creationDate;
+    public function setCategoryId($category_id){
+        $this->category_id = $category_id;
+        return $this;
+    }
+
+    /**
+     * Get the value of user_id
+     */ 
+    public function getUserId(){
+        return $this->user_id;
+    }
+
+    /**
+     * Set the value of user_id
+     *
+     * @return  self
+     */ 
+    public function setUserId($user_id){
+        $this->user_id = $user_id;
         return $this;
     }
 
     public function __toString(){
         return $this->title;
     }
+
+    // On récupère ici le pseudo de l’utilisateur créateur du topic
+private $nickName;
+
+/**
+ * Get the value of nickName (le pseudo de l’auteur du topic)
+ */ 
+public function getNickName(){
+    return $this->nickName;
+}
+
+/**
+ * Set the value of nickName
+ *
+ * @return  self
+ */ 
+public function setNickName($nickName){
+    $this->nickName = $nickName;
+    return $this;
+}
+
 }

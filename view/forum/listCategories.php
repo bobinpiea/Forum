@@ -1,24 +1,34 @@
 <?php
-    // A revoir ça
+    // On récupère les données envoyées depuis le contrôleur ForumController (via return[])
+    // Le tableau $result contient un sous-tableau appelé 'data', et dans ce sous-tableau, il y a un élément 'categories'
+    // Cet élément contient en réalité une liste (un tableau) d'objets Category (grâce à CategoryManager)
+    // On stocke donc tout ça dans une variable plus simple : $categories
     $categories = $result["data"]['categories']; 
 ?>
 
-<h1> FORUM - Liste des catégories</h1>
-<!-- Lien pour  une nouvelle catégorie -->
-<a href="index.php?ctrl=forum&action=addCategory">Créer une nouvelle catégorie</a>
+<!-- Titre principal de la page -->
+<h1>FORUM : Liste des catégories</h1>
+
+<!-- LIEN POUR AJOUTER UNE NOUVELLE CATÉGORIE -->
+<p><a href="index.php?ctrl=forum&action=addCategory">Créer une nouvelle catégorie</a></p>
 
 <?php
-    // On parcourt chaque catégorie pour l'afficher
-    foreach($categories as $category ){ ?>
-        <p>
-            <!-- Lien vers la liste des topics de cette catégorie -->
-            <a href="index.php?ctrl=forum&action=listTopicsByCategory&id=<?= $category->getId() ?>">
-                <?= $category->getName() ?>
-            </a>
+// On parcourt chaque catégorie (chaque objet Category) dans la liste $categories
+foreach($categories as $category ){ ?>
 
-            <!-- Lien pour supprimer la catégorie -->
-            <a style="color: red;" href="index.php?ctrl=forum&action=deleteCategory&id=<?= $category->getId() ?>">
-                Supprimer
-            </a>
-        </p>
+    <p> 
+        <!-- Lien vers les topics de la catégorie -->
+        <a href="index.php?ctrl=forum&action=listTopicsByCategory&id=<?= $category->getId() ?>">
+            <?= $category->getName() ?>
+        </a> 
+        
+        <!-- Lien pour supprimer la catégorie avec confirmation -->
+        <a 
+            href="index.php?ctrl=forum&action=deleteCategory&id=<?= $category->getId() ?>"
+            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ? Cette action est irréversible.')"
+        >
+            Supprimer
+        </a>
+    </p>
+
 <?php } ?>

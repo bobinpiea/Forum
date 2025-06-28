@@ -37,9 +37,7 @@ use Model\Managers\UserManager;
 // Une classe abstraite ne peut pas être instanciée
 // Elle sert uniquement de modèle de base  pour d’autres classes qui vont l’étendre
 
-
 // ---------- IMPLEMENTS : UTILISATION D’UNE INTERFACE ----------
-
 
 // Le mot-clé "implements ControllerInterface" signifie que ForumController
 // s’engage à respecter un contrat défini par l’interface ControllerInterface
@@ -54,302 +52,326 @@ use Model\Managers\UserManager;
 // - "implements" impose de respecter une structure (sans code fourni)
 
 
-
 class ForumController extends AbstractController implements ControllerInterface{
 
-    // LA LISTE DE TOUTES LES CATÉGORIES (page d’accueil du forum)
-        public function index() {
-        
-            // On instancie un objet CategoryManager
-            // car CategoryManager est une classe qui permet de se connecter à la base de données
-            // pour récupérer toutes les informations concernant les catégories
-            // Ce fichier se trouve dans model/managers/CategoryManager.php
-            // Et comme cette classe hérite de Manager.php (qui est dans app/), et elle peut utiliser findAll()
-                $categoryManager = new CategoryManager();
+            public function index() {
+                
+                // On instancie un objet : CategoryManager
+                // Pourquoi ? Car CategoryManager est une classe qui permet de se connecter à la base de données
+                // pour récupérer toutes les informations concernant les catégories
+                // Ce fichier se trouve dans model/managers/CategoryManager.php
+                // Et comme cette classe hérite de Manager.php (qui est dans app/), et elle peut utiliser findAll() (qui est une fonction native de PHP)
+                    $categoryManager = new CategoryManager();
 
-            // [récupérer la liste de toutes les catégories grâce à la méthode findAll de Manager.php (triés par nom)]
-            // On utilise la méthode findAll()
-            // Objectif : récupérer TOUTES les catégories qui existent dans la base
-            // On les trie ici par nom DESC (ordre alphabétique inversé) - DESCENDANT 
-            // Cette méthode est définie dans Manager.php et héritée par CategoryManager
-                $categories = $categoryManager->findAll(["name", "DESC"]);
+                // (Récupérer la liste de toutes les catégories grâce à la méthode findAll de Manager.php (triés par nom) + Ordre Décroissant)
+                // On appelle la méthode findAll() héritée de Manager.php
+                // Elle permet de récupérer toutes les lignes de la table "category" - "All"
+                // On les trie par ordre décroissant (DESC) selon la colonne "name"
+                // On obtient un tableau d'objets "Category"
+                    $categories = $categoryManager->findAll(["name", "DESC"]);
 
-            // le controller communique avec la vue "listCategories" (view) pour lui envoyer la liste des catégories cf. (data)
-            // VIEW : On indique que l'affichage va se faire dans le fichier view/forum/listCategories.php
-            // META_DESCRIPTION : sert à remplir automatiquement la balise <meta name="description"> (utile pour le SEO)
-            // DATA : on envoie à la vue un seul objet : $categories
-            // Cela permettra dans la vue de faire une boucle foreach($categories as $category) pour tout afficher
-                return [
-                    "view" => VIEW_DIR."forum/listCategories.php",
-                    "meta_description" => "Liste des catégories du forum",
-                    "data" => [
-                        "categories" => $categories
-                    ]
-                ];
-        }
-
-    // LA LISTE DES TOPICS PAR CATÉGORIE
-        public function listTopicsByCategory($id) {
-            
-            // On instancie un objet TopicManager
-            // Pourquoi ?
-            // Car TopicManager est une classe qui va permettre d’aller chercher dans la base de données
-            // toutes les informations liées aux topics "d'ou le nom " List Topics By Category"
-            // Ce fichier se trouve dans le dossier "model" via fichier TopicManager.php
-            // Et comme TopicManager hérite de la class Manager, on hérite automatiquement des fonctions SQL
-            // (notamment SELECT * FROM, ...)
-                $topicManager = new TopicManager();
-
-            // Idem : on instancie un objet CategoryManager
-            // Pourquoi donc ?
-            // Parce qu’on aura besoin de récupérer les infos de la catégorie en question : 
-            // On veut afficher AUSSI la catégorie sélectionnée (pas juste ses topics)
-            // On veut récupérer ses infos, comme son nom ... 
-            // Le fichier CategoryManager.php se trouve aussi dans le dossier "model"
-            // Et il hérite aussi de Manager, donc on peut utiliser findOneById()
-                $categoryManager = new CategoryManager();
-
-            // On utilise la méthode findOneById($id)
-            // Objectif : récupérer UNE SEULE catégorie (via son ID)
-            // Cette méthode vient de Manager.php (dans app/)
-            // Elle est héritée par CategoryManager ainsi on peut l’utiliser ici
-                $category = $categoryManager->findOneById($id);
-
-            // On utilise une méthode PLUS SPÉCIFIQUE : findTopicsByCategory($id)
-            // Cette méthode se trouve DANS TopicManager.php (model/managers/)
-            // Elle permet de récupérer TOUS les topics (qui ont un id_category = $id) ????
-            // Donc tous les topics liés à la catégorie sélectionnée
-                $topics = $topicManager->findTopicsByCategory($id);
-
-            // On retourne les informations à la vue (liste des topics) - mais ça peut-être la vue qu'on souhaite
-            // VIEW : On précise le chemin du fichier PHP de la vue (dans view/forum/listTopics.php dans ce cas)
-            // META_DESCRIPTION => utilisé dans le <head> de la page, pour le référencement
-            // DATA : on transmet à la vue deux objets : $category et $topics (ceux qu'on a créé plus haut)
-            // - $category => pour afficher le nom ou l’ID de la catégorie
-            // - $topics => pour faire une boucle et afficher chaque topi
-            return [
-                "view" => VIEW_DIR."forum/listTopics.php", 
-                "meta_description" => "Liste des topics de la catégorie : ".$category->getName(),
-                "data" => [
-                    "category" => $category,
-                    "topics" => $topics
-                ]
-            ];
-        }
-    
-    // DETAIL TOPIC 
-        public function detailTopic($id) {
-
-            // On instancie un objet à partir de la classe TopicManager
-            // Cela permet d'utiliser ses méthodes pour récupérer les données sur le topic
-                $topicManager = new TopicManager();
-
-            // idem : on instancie MessageManager pour récupérer les messages du topic
-                $messageManager = new MessageManager();
-            
-            // On récupère le topic correspondant à l'ID 
-            // findOneById() est définie dans Manager.php (héritée par TopicManager)
-                $topic = $topicManager->findOneById($id);
-
-            // On récupère tous les messages associés à ce topic
-            // Grace à une méthode personnalisée définie ds MessageManager
-                $messages = $messageManager->findMessagesByTopic($id);
-            
-            // On retourne les données vers la vue detailTopic.php (à créer) avec :
-            // - le topic à afficher
-            // - les messages liés à ce topic
-            // - une description pour le <meta>
-                return [
-                    "view" => VIEW_DIR . "forum/detailTopic.php",
-                    "meta_description" => "Détail du topic : " . $topic->getTitle(),
-                    "data" => [
-                        "topic" => $topic,
-                        "messages" => $messages
-                    ]
-                ]; 
-        }
-
-    // A REVOIR
-    // METHODE POUR AFFICHER TOUS LES MESSAGES D'UN TOPIC
-        public function listMessagesByTopic($id) {
-            // CREATION DES OBJETS VIA LES MANAGERS 
-            // création d'un objet pour gérer tous les messages
-                $messageManager = new MessageManager();
-            // Idem pour les topics
-                $topicManager = new TopicManager();
-
-            // Récupération du topic 
-            $topic = $topicManager->findOneById($id);
-            // Récupération des messages 
-            $messages = $messageManager->findMessagesByTopic($id);
-
-            // Retour à la vue 
-            return [
-                "view" => VIEW_DIR."forum/listMessages.php",
-                "meta_description" => "Liste des messages par topic : ".$topic,
-                "data" => [
-                    "topics" => $topic,
-                    "messages" => $messages
-                ]
-            ];
-        }
-
-    //  AJOUTER UNE NOUVELLE CATÉGORIE AU FORUM
-        public function addCategory() {
-
-            // Filtrage de la donnée entrante: de name pour être sur de recevoir ce que l'on souhaite
-            //
-            $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-            // Si un nom a bien été envoyé 
-            if ($name) {
-                // On instancie un objet avec la class de la table CategoryManager 
-                // (c'est celle qui se connecte à la bdd et à Category)
-                $categoryManager = new CategoryManager();
-
-                // On utilise la méthode add() pour insérer une nouvelle ligne dans la table category
-                $categoryManager->add(["name" => $name]);
-
-              // Ici, on redirige le nvagitaeur vers une page du site 
-              // redirectTo() est une méthode définie dans AbstractController (le fichier parent de ForumController)
-                $this->redirectTo("forum", "index.php");
+                // On prépare les données à envoyer à la vue (listCategories.php)
+                // C'est un tableau tableau associatif, et ce dernier contient :
+                // - le chemin vers le fichier PHP qui affichera la page (view)
+                // - une description de la page (meta_description) pour les moteurs de recherche
+                // - un tableau de données contenant les catégories récupérées 
+                    return [
+                        // Chemin vers la vue qui va afficher les catégories (dans view/forum/)
+                            "view" => VIEW_DIR."forum/listCategories.php", 
+                        // Description de la page, utilisée dans la balise <meta> du <head> HTML
+                            "meta_description" => "Liste des catégories du forum", 
+                        // Données envoyées à la vue (on y accèdera avec $result["data"]['categories'])
+                            "data" => [
+                                "categories" => $categories
+                            ]
+                    ];
             }
-          
-            //  si rien n’a été envoyé (ou que le formulaire est vide), on affiche le formulaire à nouveau 
-            return [
-                "view" => VIEW_DIR."forum/addCategory.php",
-                "meta_description" => "Formulaire d'ajout de catégorie"
-            ];
-        } 
+
+    /** FONCTIONS LIEES AUX CATEGRORIES  */   
+
+        // MÉTHODE POUR AFFICHER LA LISTE DES TOPICS PAR CATÉGORIE
+            public function listTopicsByCategory($id) {
+                
+                // On instancie un objet TopicManager
+                // Pourquoi ?
+                // Car TopicManager est une classe qui va permettre d’aller chercher dans la base de données
+                // toutes les informations liées aux topics "d'où le nom" List Topics By Category
+                // Ce fichier se trouve dans le dossier/ namespace "model" via fichier TopicManager.php
+                // Et comme TopicManager hérite de la class Manager, on hérite automatiquement des fonctions SQL
+                // (notamment SELECT * FROM, ...), et aussi de nos méthodes natives comme findTopicsByCategory()
+                    $topicManager = new TopicManager();
+
+                // Idem : on instancie un objet CategoryManager
+                // Pourquoi donc ?
+                // Parce qu’on aura besoin de récupérer les infos de la catégorie en question : 
+                // On veut afficher AUSSI la catégorie sélectionnée (pas juste ses topics)
+                // On veut récupérer ses infos, comme son nom ...
+                // Le fichier CategoryManager.php se trouve aussi dans le dossier "model"
+                // Et il hérite aussi de Manager, donc on peut utiliser findOneById()
+                    $categoryManager = new CategoryManager();
+
+                // On utilise la méthode findOneById($id) qui retourne un objet
+                    $category = $categoryManager->findOneById($id);
+
+                // On vérifie si la catégorie existe bien
+                // Si elle n'existe pas (ID incorrect, catégorie supprimée...), on redirige vers l'accueil du forum
+                    if (!$category) {
+                        $this->redirectTo("forum", "index");
+                    }
+
+                // On utilise : findTopicsByCategory($id)
+                // Cette méthode se trouve DANS TopicManager.php (model/managers/)
+                // Elle permet de récupérer TOUS les topics (qui ont un category_id = $id)
+                // Donc tous les topics liés à la catégorie sélectionnée
+                    $topics = $topicManager->findTopicsByCategory($id);
+
+                // On retourne les informations à la vue (liste des topics) - mais ça peut être la vue qu'on souhaite
+                // VIEW : On précise le chemin du fichier PHP de la vue (dans view/forum/listTopics.php dans ce cas)
+                // META_DESCRIPTION => utilisé dans le <head> de la page, pour le référencement
+                // DATA : on transmet à la vue deux objets : $category et $topics (ceux qu'on a créés plus haut)
+                // - $category => pour afficher le nom ou l’ID de la catégorie
+                // - $topics => pour faire une boucle et afficher chaque topic
+                    return [
+                        "view" => VIEW_DIR."forum/listTopics.php", 
+                        "meta_description" => "Liste des topics de la catégorie : ".$category->getName(),
+                        "data" => [
+                            "category" => $category,
+                            "topics" => $topics
+                        ]
+                    ];
+            }
+
+        // AFFICHER UN FORMULAIRE POUR AJOUTER UNE NOUVELLE CATEGORIE 
+            public function addCategory() {
+                // Cette méthode ne fait qu'afficher le formulaire HTML vide permettant
+                // à l'utilisateur d'écrire le nom d'une nouvelle catégorie.
+
+                // on ne crée rien, on ne lit rien, on prépare juste l'affichage du formulaire.
+                // Le formulaire affiché se trouve dans view/forum/addCategory.php
+                // Il sera traité ensuite par une autre méthode qui, qunat à elle, fera l'insertion.
+                    return [
+                        "view" => VIEW_DIR."forum/addCategory.php",
+                        "meta_description" => "Formulaire pour ajouter une catégorie"
+                    ];
+            }            
+
+        // AJOUTER/INSERER UNE NOUVELLE CATEGORIE
+            public function insertCategory() {
+                // On vérifie que des données ont été envoyées en POST - Charles
+                    if (isset($_POST["name"]) && !empty($_POST["name"])) {
+
+                        // On nettoie la donnée envoyée depuis le formulaire - Afin d'éviter toutes failles - CHARLES 
+                            $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+                        // On instancie un objet CategoryManager pour gérer les catégories
+                            $categoryManager = new CategoryManager();
+
+                        // On appelle la méthode add() du manager en lui donnant le nom de la nouvelle catégorie
+                            $categoryManager->add([
+                                "name" => $name
+                            ]);
+
+                        // On redirige vers la page d'accueil du forum (liste des catégories)
+                            $this->redirectTo("forum", "index");
+
+                    } else {
+                        // Si le champ est vide, on peut rediriger vers le formulaire ou afficher une erreur
+                        // Pour l’instant, on redirige juste vers la liste des catégories
+                            $this->redirectTo("forum", "index");
+                    }
+            }
+
     
-    //  Fonction Suppression d'une categorie
-        Public function deleteCategory($id) {
-           
-            // Idem que plus haut, on instancie un objet afin d'avoir accès à la base de données
-            $categoryManager = new CategoryManager();
-
-             // On appelle la méthode delete() du Manager (déjà définie dans App\Manager)
-            $categoryManager->delete($id);
-
-            $this->redirectTo("forum", "index.php");
-
-            return [
-                "view" => VIEW_DIR."forum/listCategories.php", // on renvoie vers la vue qui liste les catégories
-                "meta_description" => "Liste des catégories du forum après suppression", // description pour le <head>
-                "data" => [
-                    "categories" => $categories // on transmet la nouvelle liste des catégories
-                ]
-            ];  
-        }
-
-
-    //  AJOUTER UN NOUVEAU TOPIC À UNE CATÉGORIE
-        public function addTopicToCategory($id) {
-            //  On récupère le champ "title" envoyé par formulaire en POST qu'on enverra dans la table Topic
-            // filter_input permet de sécuriser ce qu’on reçoit
-            //Objectif
-                $title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        
-            
-            // Interaction avec la bdd et ici la table topic
-                $topicManager = new TopicManager();
-
-            // On utilise la méthode add() pour insérer un nouveau topic dans la bdd
-            // On lui passe un tableau associatif avec :
-            // - "title" => le titre du topic 
-            // - "category_id" => l ID de la catégorie dans laquelle ajouter ce topic
-                $topicManager->add([
-                    "title" => $title,
-                    "category_id" => $id,
-                    "user_id" => 1,
-                ]);
-
-            // Une fois que le topic est ajouté, on fait une redirection 
-            
-                $this->redirectTo("forum", "listTopicsByCategory", $id);
-
-             // Si  rien n'a été rransmis, on retourne la vue du formulaire 
-                return [
-                    "view" => VIEW_DIR . "forum/addTopic.php",
-                    "meta_description" => "Formulaire d'ajout de topic",
-                      "data" => [
-                    "category_id" => $id
-                    ]   
-                ];
-        }
-
+        //    Fonction Suppression d'une categorie (supprimer une catégorie depuis son identifiant)
     
-    // 
-        public function deleteTopic($id){
+            public function deleteCategory($id) {
 
-            $topicManager = new TopicManager(); 
+                // Idem que plus haut, on instancie un objet afin d'avoir accès à la base de données
+                    $categoryManager = new CategoryManager();
 
-            $topic = $topicManager->findOneById($id); 
+                // On supprime la catégorie dont l'id est celui reçu dans l'URL (grâce à $_GET['id'])
+                // On appelle la méthode delete() du Manager (déjà définie dans App\Manager)
+                    $categoryManager->delete($id);
 
-            $categoryId = $topic->getCategory()->getId();
+                // On retourne vers la liste des catégories, comme si on appelait la méthode index()
+                    $this->redirectTo("forum", "index");;
+            }
 
-            $topicManager->delete($id);
+  /** FONCTIONS RELATIVES AUX TOPICS  */   
 
-            $this->redirectTo("forum", "listTopicsByCategory", $categoryId);
-        }
+        // MÉTHODE pour créer un nouveau topic (sujet) dans une catégorie
 
-    
-    //
-        public function addMessageToTopic($id) {
+            public function addTopicToCategory($id) { // Fait par charles - DONC RELIS LE
 
-            $content = filter_input(INPUT_POST, "content", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                // On instancie les managers pour accéder à la base de données
+                    $topicManager = new TopicManager();         // Pour insérer un nouveau topic
+                    $categoryManager = new CategoryManager();   // Pour récupérer la catégorie actuelle
 
-            $userId = 1;
+                // On récupère la catégorie dans laquelle on va créer le topic
+                    $category = $categoryManager->findOneById($id);
 
-            $messageManager = new MessageManager();
+                // On vérifie si le formulaire a été soumis en regardant si le champ "title" existe - Charles 
+                    if (!empty($_POST["title"])) {
 
-            $messageManager->add([
-                "content" => $content,
-                "topic_id" => $id,
-                "user_id" => $userId
-            ]);
+                        // On récupère le champ "title" (titre du topic) envoyé par le formulaire
+                        // On le nettoie avec filter_input pour éviter les failles XSS
+                        $title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            $this->redirectTo("forum", "detailTopic", $id);
-        }
+                        // Correction ici : on récupère l’ID utilisateur saisi dans le formulaire 
+                            $user_id = filter_input(INPUT_POST, "user_id", FILTER_SANITIZE_NUMBER_INT);
 
-    // SUPPRESSION D’UN MESSAGE 
-        public function deleteMessage($id) {
+                        // Si le titre est bien rempli, on peut enregistrer le topic
+                            if ($title) {
 
-            // On instancie un objet MessageManager
-            // car MessageManager est une classe qui permet de se connecter à la base de données
-            // pour interagir avec les messages (table "message" dans la base de données)
-            // Ce fichier se trouve dans model/managers/MessageManager.php
-            // Et comme cette classe hérite de Manager.php (présent dans app/), elle peut utiliser toutes les méthodes comme findOneById() ou delete()
-            $messageManager = new MessageManager();
+                            // On ajoute le topic à la base de données avec la méthode add()
+                                $topicManager->add([
+                                    "title" => $title,                            // Le titre saisi par l'utilisateur
+                                    "creationDate" => date("Y-m-d H:i:s"),        // Date et heure actuelle
+                                    "closed" => 0,                                // Le topic est "ouvert"
+                                    "category_id" => $id,                         // L'identifiant de la catégorie choisie
+                                    "user_id" => $user_id                         // L'auteur du topic (récupéré depuis le formulaire)
+                                ]);
 
-            // Récupération du message via son id 
-            // La méthode findOneById($id) permet d’aller chercher dans la bdd id mi sen paramètre 
-            // le message récupéré est dans l'objet $message
-            $message = $messageManager->findOneById($id);
+                            // Une fois le topic ajouté, on redirige vers la liste des topics de cette catégorie
+                                $this->redirectTo("forum", "listTopicsByCategory", $id);
+                        }
+                    }
 
-            // Récupération de l’ID du topic associé à ce message
-            // Objectif : pouvoir rediriger l’utilisateur vers la page du topic après la suppression du message
-            // On utilise ici deux méthodes en chaîne :
-            // -> getTopic() : permet de récupérer l’objet Topic lié à ce message
-            // -> getId() : permet d’obtenir uniquement l’identifiant (numérique) du topic
-            // Résultat : on obtient par exemple un entier comme 7 ou 12 qui correspond à l’ID du sujet
-            $topicId = $message->getTopic()->getId();
-
-            // Suppression du message dans la base de données
-            // On utilise ici la méthode delete($id) définie dans Manager.php
-            // Cette méthode exécute une requête DELETE SQL pour supprimer définitivement le message dont l’ID est donné
-            $messageManager->delete($id);
-
-            // Redirection vers la page du topic associé après suppression
-            // Objectif : revenir automatiquement à la page du sujet une fois le message supprimé
-            // La méthode redirectTo() permet de rediriger vers une autre action d’un contrôleur
-            // Ici, on redirige vers : controller = "forum", action = "detailTopic", et on transmet l’ID du topic pour l'affichage
-            $this->redirectTo("forum", "detailTopic", $topicId);
-        }
+                    // Si le formulaire n'a pas encore été envoyé, on affiche simplement le formulaire
+                        return [
+                            "view" => VIEW_DIR."forum/addTopicToCategory.php",                        // Fichier de vue
+                            "meta_description" => "Ajouter un topic dans la catégorie ".$category, 
+                            "data" => [
+                                "category" => $category       // On envoie la catégorie à la vue
+                            ]
+                        ];
+            }
 
 
-}
+        // MÉTHODE POUR SUPPRIMER UN TOPIC
+            public function deleteTopic($id) {
+
+                // On instancie le TopicManager (accès à la table topic)
+                    $topicManager = new TopicManager();
+
+                // On récupère le topic AVANT de le supprimer
+                // Pourquoi ? Car on a besoin de connaître la catégorie d’origine (pour rediriger ensuite)
+                    $topic = $topicManager->findOneById($id);
+
+                // Si le topic existe bien
+                    if ($topic) {
+
+                    // On récupère l’ID de la catégorie liée à ce topic
+                        $categoryId = $topic->getCategoryId();
+
+                    // On supprime le topic
+                        $topicManager->delete($id);
+
+                    // Une fois supprimé, on redirige vers la liste des topics de cette catégorie
+                        $this->redirectTo("forum", "listTopicsByCategory", $categoryId);
+                }
+                else {
+                    // Si le topic n'existe pas , on redirige vers le forum général
+                        $this->redirectTo("forum", "index");
+                }
+            }
 
 
+  /** FONCTIONS RELATIVES AUX MESSAGES  */   
 
- 
+        // MÉTHODE POUR AFFICHER TOUS LES MESSAGES D’UN TOPIC
+            public function listMessagesByTopic($id) {
+
+                // Même reflexion, Managers nécessaires
+                    $messageManager = new MessageManager();
+                    $topicManager = new TopicManager();
+
+                // écupérer le topic (titre, auteur, etc.)
+                    $topic = $topicManager->findOneById($id);
+
+                // Si le topic n’existe pas, on redirige vers les topics de la catégorie précédente 
+                if (!$topic) {
+                    //  ici on ne peut pas récupérer l’ID de la catégorie du topic supprimé - Charles
+                    // donc on redirige vers la liste générale des catégories
+                    $this->redirectTo("forum", "listCategories");
+                }
+
+                // Récupérer les messages associés
+                    $messages = $messageManager->findMessagesByTopic($id);
+
+                // On renvoie à la vue
+                    return [
+                        "view" => VIEW_DIR."forum/listMessages.php",
+                        "meta_description" => "Messages du topic : ".$topic,
+                        "data" => [
+                            "topic" => $topic,
+                            "messages" => $messages
+                        ]
+                    ];
+            }
+
+        // MÉTHODE POUR AJOUTER UN MESSAGE DANS UN TOPIC
+            public function addMessageToTopic($id) {
+
+                // On instancie le MessageManager
+                $messageManager = new MessageManager();
+
+                // On vérifie que le champ "content" existe dans le formulaire
+                if (!empty($_POST["content"])) {
+
+                    // On nettoie le contenu du message (anti XSS)
+                    $content = filter_input(INPUT_POST, "content", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+                    // On récupère l’ID utilisateur depuis le formulaire
+                    $user_id = filter_input(INPUT_POST, "user_id", FILTER_SANITIZE_NUMBER_INT);
+
+                    // Si le contenu est bien rempli
+                    if ($content && $user_id && $id) {
+
+                        // On insère le message dans la base
+                        $messageManager->add([
+                            "content" => $content,
+                            "creationDate" => date("Y-m-d H:i:s"),
+                            "user_id" => $user_id,
+                            "topic_id" => $id
+                        ]);
+
+                        // Redirection vers la page du topic
+                        $this->redirectTo("forum", "listMessagesByTopic", $id);
+                    }
+                }
+
+                // Si le formulaire est mal rempli, on redirige quand même vers le topic
+                $this->redirectTo("forum", "listMessagesByTopic", $id);
+            }
+
+        // MÉTHODE POUR SUPPRIMER UN MESSAGE
+            public function deleteMessage($id) {
+
+                // On instancie le manager
+                $messageManager = new MessageManager();
+
+                // On récupère le message qu’on veut supprimer (objet Message)
+                $message = $messageManager->findOneById($id);
+
+                // On vérifie si le message existe bien
+                if ($message) {
+
+                    // On récupère l’identifiant du topic auquel appartient ce message
+                    $topicId = $message->getTopicId();
+
+                    // On supprime le message
+                    $messageManager->delete($id);
+
+                    // Une fois le message supprimé, on redirige vers la liste des messages du même topic
+                    $this->redirectTo("forum", "listMessagesByTopic", $topicId);
+                }
+
+                // Si le message n’existe pas, on peut rediriger vers une page d’erreur ou la page d’accueil
+                else {
+                    $this->redirectTo("forum", "listCategories");
+                }
+            }
+
+
+    }

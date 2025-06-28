@@ -1,33 +1,82 @@
 <?php
-    // On récupère les infos du topic et des messages dans les données passées par le contrôleur
-    $topic = $result["data"]['topic']; 
-    $messages = $result["data"]['messages']; 
+    // On récupère le topic courant (objet Topic)
+    $topic = $result["data"]['topic'];
+
+    // On récupère tous les messages associés à ce topic (tableau d’objets Message)
+    $messages = $result["data"]['messages'];
 ?>
 
+<!-- TITRE PRINCIPAL : on affiche le titre du topic -->
+<h1>Messages du topic : "<?= $topic ?>"</h1>
 
-<?php if($topic): ?>
+<!-- LIEN POUR RETOURNER À LA LISTE DES TOPICS DE LA CATÉGORIE -->
+<p>
+    <a href="index.php?ctrl=forum&action=listTopicsByCategory&id=<?= $topic->getCategoryId() ?>">
+        ← Retour à la liste des topics de la catégorie
+    </a>
+</p>
 
-    <h1>Messages pour le topic : <?= $topic->getTitle() ?></h1>
+<!-- AFFICHAGE DE LA LISTE DES MESSAGES -->
+<?php 
+// S’il y a des messages
+if ($messages):
+    // Pour chaque message, on affiche son contenu
+    foreach($messages as $message): 
+?>
 
-    <?php
-    // Pour chaque message du tableau $messages, on affiche les infos
-    foreach($messages as $message ){ ?>
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        
+        <!-- CONTENU DU MESSAGE -->
+        <p><?= $message->getContent() ?></p>
+
+        <!-- INFOS SUPPLÉMENTAIRES : auteur et date -->
+        <?php
+            $date = new DateTime($message->getCreationDate());
+            $dateFormatted = $date->format("d/m/Y à H\hi");
+        ?>
+        <p><small>
+            Écrit par utilisateur #<?= $message->getUserId() ?> le <?= $dateFormatted ?>
+        </small></p>
+
+        <!-- BOUTON POUR SUPPRIMER CE MESSAGE -->
         <p>
-         
-            <a href="index.php?ctrl=forum&action=listMessagesByTopic&id=<?= $topic->getId() ?>">
-                <?= $message->getContent() ?> 
+            <a 
+                href="index.php?ctrl=forum&action=deleteMessage&id=<?= $message->getId() ?>" 
+                onclick="return confirm('Confirmer la suppression de ce message ?')"
+            >
+                🗑️ Supprimer ce message
             </a>
-            par <?= $message->getUser()->getNickName() ?>
-            le <?= $message->getCreationDate()?>
         </p>
-    <?php } ?>
+    </div>
 
-<?php else: ?>
+<?php 
+    endforeach;
 
-    <p style="color: red;">
-        Le topic demandé n'existe pas ou a été supprimé.
+else: 
+    // Si aucun message n’est encore publié
+?>
+    <p>Aucun message pour ce topic pour le moment.</p>
+<?php 
+endif;
+?>
+
+<!-- FORMULAIRE POUR AJOUTER UN NOUVEAU MESSAGE -->
+<h2>Ajouter un message</h2>
+
+<form action="index.php?ctrl=forum&action=addMessageToTopic&id=<?= $topic->getId() ?>" method="post">
+
+    <p>
+        <label for="content">Message :</label><br>
+        <textarea name="content" id="content" cols="60" rows="5" required></textarea>
     </p>
 
-<?php endif; ?>
+    <p>
+        <label for="user_id">Auteur (ID utilisateur) :</label><br>
+        <input type="number" name="user_id" id="user_id" value="1" required>
+        <!-- Simulation d’un utilisateur connecté -->
+    </p>
 
-
+    <p>
+        <input type="submit" value="Envoyer le message">
+    </p>
+</form>
