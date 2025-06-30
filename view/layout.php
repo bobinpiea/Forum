@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -33,6 +35,7 @@
                             <a href="index.php?ctrl=forum&action=listTopicsByCategory&id=56">MTT</a>
                             <a href="index.php?ctrl=forum&action=listTopicsByCategory&id=57">Spin & Expresso</a>
                             <?php if(App\Session::isAdmin()){ ?>
+
                                 <a href="index.php?ctrl=home&action=users">Voir la liste des gens</a>
                             <?php } ?>
                         </div>

@@ -10,6 +10,8 @@ use Model\Managers\MessageManager;
 use Model\Managers\UserManager;
 use App\DAO;
 
+use Model\Entities\User;
+
 // contiendra les méthodes liées à l'authentification : register, login, logout ainsi que le profil de l'utilisateur
 class SecurityController extends AbstractController{
 
@@ -26,11 +28,11 @@ class SecurityController extends AbstractController{
             $pass1    = filter_input(INPUT_POST, "pass1", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $pass2    = filter_input(INPUT_POST, "pass2", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            // On vérifie que tous les champs sont bien remplis
+            // On vérifie que tous les champs soient bien remplis
             if ($nickName && $email && $pass1 && $pass2) {
 
                 // Vérification que les 2 mots de passe sont identiques et assez longs
-                // et a au moins 12 caractères (respect conseilles de la CNIL )
+                // et a au moins 12 caractères (respect conseil de la CNIL )
                 // Je devrais mettre plus Alpanumérique, Maj, Min mais next time
                 if ($pass1 === $pass2 && strlen($pass1) >= 3) {
 
@@ -53,11 +55,11 @@ class SecurityController extends AbstractController{
                     $this->redirectTo("security", "login");
 
                 } else {
-                    echo " Les mots de passe ne correspondent pas ou sont trop courts.";
+                    echo "Les mots de passe ne correspondent pas ou sont trop courts.";
                 }
 
             } else {
-                echo " Merci de remplir tous les champs du formulaire.";
+                echo "Merci de remplir tous les champs du formulaire.";
             }
         }
 
@@ -69,61 +71,68 @@ class SecurityController extends AbstractController{
     }
 
 
- // FONCTION RELATIVE A LA CONNEXION   
+// FONCTION RELATIVE A LA CONNEXION   
     public function login() {
 
+        // Cette ligne appelle la méthode statique définie dans notre DAO
+        // pour établir une connexion avec la base de donnée, dans le namespace App
+        \App\DAO::connect();
 
         // On vérifie si le formulaire a été soumis 
-            if (isset($_POST["submit"])) {
+        if (isset($_POST["submit"])) {
 
-                // On récupère et nettoie les données du formulaire et on les filtres afin d'éviter 
-                // toutes failles xxs
-                $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
-                $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            // On récupère et nettoie les données du formulaire et on les filtres afin d'éviter 
+            // toutes failles xxs
+            $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
+            $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-                // Vérification des deux champs et de leur validiter
-                if ($email && $password) {
+            // Vérification des deux champs et que les deux champs ont bien été remplis
+            if ($email && $password) {
 
-                    //var_dump("email"); die;
+                //var_dump("email"); die;
 
-                    // Preparation d'une requete sql pour récupérer l'utilisateur 
-                    // Eviter toutes injection sql 
-                    $requete = "SELECT * FROM user WHERE email = :email";
+                // Preparation d'une requete sql pour récupérer l'utilisateur 
+                // Eviter toutes injection sql 
+                $requete = "SELECT * FROM user WHERE email = :email";
 
-                    // On crée un variable dans laquelle il y aura le resulat ou pas de la requete sql 
-                    // ca sera un tableau associatif  
-                    $result = DAO::select($requete, ["email" => $email], false); 
+                // On crée un variable dans laquelle il y aura le resulat ou pas de la requete sql 
+                // ca sera un tableau associatif  
+                // Appelle de la méthode statique Select() de DAO
+                // Cette dernière prépare, exécute et renvoie un seul résultat 
+                // D'ou le fetch  (false = fetch() )
+                $result = DAO::select($requete, ["email" => $email], false); 
 
-                    // On vérifie si un utilisateur a été trouvé avec cet email
-                    if ($result) {
+                // On vérifie si un utilisateur a été trouvé avec cet email
+                // Si un utilisateur est trouvé dans la base de données,
+                // on passe à la vérification du mot de passe.
+                if ($result) {
 
+                    // On vérifie si le mdp est juste
+                    // password_verify compare le mot de passe saisi
+                    // avec celui haché stocké dans la base 
+                    // si le deux concordent
+                    if (password_verify($password, $result["password"])) {
 
-                        // On vérifie si le mdp est juste
-                        // password_verify compare le mot de passe saisi
-                        // avec celui haché stocké dans la base 
-                        // si le deux concordent
-                        if (password_verify($password, $result["password"])) {
+                        // Création d'un objet User avec les données récupérées
+                        // et on le garde en mémoire via la super globale (SESSION)
+                        // durée la durée de la navigation - et les réutiliser ultérieurement 
+                        $_SESSION["user"] = new User($result);
 
-                            // On Stocke les infos de l'utilisateur en session
-                            // pour qu'on puisse les réutiliser plus tard
-                            $_SESSION["user"] = $result;
-
-
-                            // Redirection vers la page d'accueil du forum
-                            $this->redirectTo("forum", "listCategories");
-
-                        } else {
-                            echo "Mot de passe incorrect";
-                        }
+                        // Redirection vers la page d'accueil du forum
+                        $this->redirectTo("forum", "listCategories");
 
                     } else {
-                        echo "Adresse email incorrect";
+                        echo "Mot de passe incorrect";
                     }
 
                 } else {
-                    echo "Veuillez remplir tous les champs.";
+                    echo "Adresse email incorrect";
                 }
+
+            } else {
+                echo "Veuillez remplir tous les champs.";
             }
+        }
 
         return [
             "view" => VIEW_DIR."security/login.php",
@@ -132,7 +141,11 @@ class SecurityController extends AbstractController{
     }
 
 
-    public function logout () {}
+    public function logout () {
+
+        
+
+    }
 
 
 
