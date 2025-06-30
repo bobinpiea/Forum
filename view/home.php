@@ -1,3 +1,5 @@
+
+
 <!-- Section 1 -->
 <section class="section1">
     <!-- Bannière rouge -->
@@ -71,7 +73,7 @@
     </p>
 
     <div class="bloc-bouton">
-        <a href="" class="btn-jaune">Créer un compte</a>
+        <a href="index.php?ctrl=security&action=register" class="btn-jaune">Créer un compte</a>
     </div>
 </section>
 

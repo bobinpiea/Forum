@@ -356,3 +356,45 @@ foreach($categories as $category ){ ?>
 
 
 A vous de jouer ! 🚀
+
+
+
+public function login() {
+
+    \App\DAO::connect(); // ✅ OBLIGATOIRE AVANT select()
+
+    if (isset($_POST["submit"])) {
+        // ...
+        $requete = "SELECT * FROM user WHERE email = :email";
+        $result = \App\DAO::select($requete, ["email" => $email], false);
+        // ...
+    }
+
+    return [
+        "view" => VIEW_DIR . "security/login.php",
+        "meta_description" => "Connexion",
+    ];
+}
+
+
+plus bas ici 
+
+
+
+pour loug out
+
+
+
+
+
+public function logout() {
+
+    // ◉ On supprime l'utilisateur connecté de la session
+    unset($_SESSION["user"]);
+
+    // ◉ On ajoute un message flash pour dire que la déconnexion a réussi
+    Session::addFlash("success", "Vous avez été déconnecté avec succès.");
+
+    // ◉ On redirige vers la page d’accueil du forum
+    $this->redirectTo("forum", "index");
+}

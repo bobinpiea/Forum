@@ -22,7 +22,7 @@
                     <nav>
                         <!-- 2 : le logo -->
                         <div id="logo">
-                            <a href="index.php?ctrl=forum&action=index">
+                            <a href="http://localhost:8888/pierre_BOBIN/Forum/index.php">
                                 <img src="public/img/logo.webp" alt="Logo Talk'em">
                             </a>
                         </div>
@@ -36,7 +36,7 @@
                                 <a href="index.php?ctrl=home&action=users">Voir la liste des gens</a>
                             <?php } ?>
                         </div>
-                        <!-- Le menu de droite -->
+                        <!-- Le menu de droite --> 
                         <div id="nav-right">
                             <?php if(App\Session::getUser()){ ?>
                                 <a href="index.php?ctrl=security&action=profile">
@@ -55,10 +55,13 @@
                     </nav>
                 </header>
                 
+                
                 <main id="forum">
                     <?= $page ?>
                 </main>
             </div>
+
+
          <footer>
     <!-- SECTION 1 DU FOOTER -->
     <section class="footer1">
