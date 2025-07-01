@@ -10,6 +10,7 @@ use Model\Managers\MessageManager;
 use Model\Managers\UserManager;
 use App\DAO;
 
+
 use Model\Entities\User;
 
 // contiendra les méthodes liées à l'authentification : register, login, logout ainsi que le profil de l'utilisateur
@@ -140,16 +141,59 @@ class SecurityController extends AbstractController{
         ];
     }
 
+    //
+        public function logout () {
+            
+        // On supprime l'utilisateur stocké dans la session
+        // Et cela déconnecte complètement l'utilisateur
+        unset($_SESSION["user"]);
 
-    public function logout () {
+        // Redirection vers l’accueil du forum
+        $this->redirectTo("forum", ""); 
 
-        
+        }
 
+// Fonction pour afficher l'utilisateur qui est connecté 
+    public function profile() {
+
+        // Verification si la personne est connecté ou pas 
+        // sinon la diriger vers la page de connexion 
+        // :: car on appel une methode dit static 
+        if (!Session::getUser()) {
+            // redirection pour qu'il se connecte
+            $this->redirectTo("security", "login");
+        }
+
+        //  s'il est connecté on recupère la session
+        $user = Session::getUser();
+
+        // On prépare les données à envoyer à la vue - qui est dans le sous dossier security
+        // Chemin vers la vue à afficher 
+        // Meta description pou rle SEO
+
+        return [
+            "view" => VIEW_DIR."security/profile.php",  
+            "meta_description" => "Profil de l'utilisateur", 
+            "data" => [
+                "user" => $user   
+            ]
+        ];
     }
 
 
+    public function editProfile (){
 
-    public function profil (){}
+        //Qd il est connecté, on recupère sa session 
+        $user = Session::getUser();
+
+         return [
+            "view" => VIEW_DIR."security/editprofile.php",  
+            "meta_description" => "Editer Profil de l'utilisateur", 
+            "data" => [
+                "user" => $user   
+            ]
+        ];
+    }
 
 
 }

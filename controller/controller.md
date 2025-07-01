@@ -28,3 +28,23 @@ le site est un restaurant.
 	•	Le contrôleur est le serveur
 	•	Les managers sont les cuisiniers (ils vont chercher les plats dans la base de données).
 	•	Les vues sont les assiettes qu’on apporte au client.
+
+
+
+Rappel : 
+
+Opérateurs de classe et d'objet
+:: - Appelle une méthode statique dans une classe
+Exemple : Session::getUser()
+-> - Appelle une méthode sur un objet déjà créé
+Exemple : $user->getEmail()
+new - Crée une nouvelle instance d'une classe
+Exemple : $user = new User()
+self:: - Référence à la classe courante (méthodes statiques)
+Exemple : self::$count
+parent:: - Référence à la classe parent
+Exemple : parent::__construct()
+$this-> - Référence à l'instance courante de l'objet
+Exemple : $this->name
+
+

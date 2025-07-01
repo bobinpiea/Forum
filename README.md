@@ -26,3 +26,11 @@ use App\Session;
         <?php endif; ?>
     </nav>
 </header>
+
+
+public function index() {
+    return [
+        "view" => VIEW_DIR . "forum/home.php",  // vers ta vue d’accueil
+        "meta_description" => "Accueil du forum"
+    ];
+}

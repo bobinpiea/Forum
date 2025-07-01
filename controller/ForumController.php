@@ -54,7 +54,7 @@ use Model\Managers\UserManager;
 
 class ForumController extends AbstractController implements ControllerInterface{
 
-            public function index() {
+            public function index() { // MODIFIER LES COMMENTAIRES car j'ai changé la redirection 
                 
                 // On instancie un objet : CategoryManager
                 // Pourquoi ? Car CategoryManager est une classe qui permet de se connecter à la base de données
