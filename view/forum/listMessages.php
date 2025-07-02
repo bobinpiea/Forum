@@ -7,7 +7,7 @@
 ?>
 
 <!-- TITRE PRINCIPAL : on affiche le titre du topic -->
-<h1>Messages du topic : "<?= $topic ?>"</h1>
+<h1>  - <?= $topic ?> </h1>
 
 <!-- LIEN POUR RETOURNER À LA LISTE DES TOPICS DE LA CATÉGORIE -->
 <p>
@@ -29,7 +29,7 @@ if ($messages):
         <!-- CONTENU DU MESSAGE -->
         <p><?= $message->getContent() ?></p>
 
-        <!-- INFOS SUPPLÉMENTAIRES : auteur et date -->
+      
         <?php
             $date = new DateTime($message->getCreationDate());
             $dateFormatted = $date->format("d/m/Y à H\hi");
@@ -44,7 +44,7 @@ if ($messages):
                 href="index.php?ctrl=forum&action=deleteMessage&id=<?= $message->getId() ?>" 
                 onclick="return confirm('Confirmer la suppression de ce message ?')"
             >
-                🗑️ Supprimer ce message
+                Supprimer ce message
             </a>
         </p>
     </div>

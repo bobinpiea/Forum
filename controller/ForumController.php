@@ -210,41 +210,52 @@ class ForumController extends AbstractController implements ControllerInterface{
                 // On récupère la catégorie dans laquelle on va créer le topic
                     $category = $categoryManager->findOneById($id);
 
-                // On vérifie si le formulaire a été soumis en regardant si le champ "title" existe - Charles 
-                    if (!empty($_POST["title"])) {
+                    // Verifier que l'utilisateur est connecté
+                    if (!Session::getuser()) {
+                       $this->redirectTo("security", "longin"); }
 
-                        // On récupère le champ "title" (titre du topic) envoyé par le formulaire
-                        // On le nettoie avec filter_input pour éviter les failles XSS
-                        $title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-                        // Correction ici : on récupère l’ID utilisateur saisi dans le formulaire 
-                            $user_id = filter_input(INPUT_POST, "user_id", FILTER_SANITIZE_NUMBER_INT);
+                       //Récupération de l'utilisateur connecté
+                       $user = Session::getUser();
+                       $user_id = $user->getID;
 
-                        // Si le titre est bien rempli, on peut enregistrer le topic
-                            if ($title) {
+                        // On vérifie si le formulaire a été soumis en regardant si le champ "title" existe - Charles 
+                            if (!empty($_POST["title"])) {
 
-                            // On ajoute le topic à la base de données avec la méthode add()
-                                $topicManager->add([
-                                    "title" => $title,                            // Le titre saisi par l'utilisateur
-                                    "creationDate" => date("Y-m-d H:i:s"),        // Date et heure actuelle
-                                    "closed" => 0,                                // Le topic est "ouvert"
-                                    "category_id" => $id,                         // L'identifiant de la catégorie choisie
-                                    "user_id" => $user_id                         // L'auteur du topic (récupéré depuis le formulaire)
-                                ]);
+                                // On récupère le champ "title" (titre du topic) envoyé par le formulaire
+                                // On le nettoie avec filter_input pour éviter les failles XSS
+                                $title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-                            // Une fois le topic ajouté, on redirige vers la liste des topics de cette catégorie
-                                $this->redirectTo("forum", "listTopicsByCategory", $id);
-                        }
-                    }
+                              /*
+                                // Correction ici : on récupère l’ID utilisateur saisi dans le formulaire 
+                                    $user_id = filter_input(INPUT_POST, "user_id", FILTER_SANITIZE_NUMBER_INT);
+                            */ 
+                            
+                                // Si le titre est bien rempli, on peut enregistrer le topic
+                                    if ($title) {
 
-                    // Si le formulaire n'a pas encore été envoyé, on affiche simplement le formulaire
-                        return [
-                            "view" => VIEW_DIR."forum/addTopicToCategory.php",                        // Fichier de vue
-                            "meta_description" => "Ajouter un topic dans la catégorie ".$category, 
-                            "data" => [
-                                "category" => $category       // On envoie la catégorie à la vue
-                            ]
-                        ];
+                                    // On ajoute le topic à la base de données avec la méthode add()
+                                        $topicManager->add([
+                                            "title" => $title,                            // Le titre saisi par l'utilisateur
+                                            "creationDate" => date("Y-m-d H:i:s"),        // Date et heure actuelle
+                                            "closed" => 0,                                // Le topic est "ouvert"
+                                            "category_id" => $id,                         // L'identifiant de la catégorie choisie
+                                            "user_id" => $user_id                         // L'auteur du topic (récupéré depuis le formulaire)
+                                        ]);
+
+                                    // Une fois le topic ajouté, on redirige vers la liste des topics de cette catégorie
+                                        $this->redirectTo("forum", "listTopicsByCategory", $id);
+                                }
+                            }
+
+                            // Si le formulaire n'a pas encore été envoyé, on affiche simplement le formulaire
+                                return [
+                                    "view" => VIEW_DIR."forum/addTopicToCategory.php",                        // Fichier de vue
+                                    "meta_description" => "Ajouter un topic dans la catégorie ".$category, 
+                                    "data" => [
+                                        "category" => $category       // On envoie la catégorie à la vue
+                                    ]
+                                ];
             }
 
 

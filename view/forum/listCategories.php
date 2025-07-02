@@ -6,10 +6,10 @@
     $categories = $result["data"]['categories']; 
 ?>
 
-<!-- Titre principal de la page -->
-<h1>FORUM : Liste des catégories</h1>
 
-<!-- LIEN POUR AJOUTER UNE NOUVELLE CATÉGORIE -->
+<h1>FORUM - LISTES DES CATEGORIES</h1>
+
+
 <p><a href="index.php?ctrl=forum&action=addCategory">Créer une nouvelle catégorie</a></p>
 
 <?php

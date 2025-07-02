@@ -1,5 +1,5 @@
 <?php
-    // On récupère la catégorie actuelle (objet Category)
+    // On récupère la catégorie actuelle 
     $category = $result["data"]['category'];
 
     // On récupère la liste des topics liés à cette catégorie (tableau d’objets Topic)
@@ -7,8 +7,8 @@
 ?>
 
 <!-- TITRE DE LA PAGE -->
-<!-- Grâce à __toString(), on affiche automatiquement le nom de la catégorie -->
-<h1>FORUM : Liste des topics pour la catégorie "<?= $category ?>"</h1>
+<!-- Avec la methode  __toString(), on affiche automatiquement le nom de la catégorie -->
+<h1>FORUM - Topics de la catégorie <?= $category ?></h1>
 
 <!-- LIEN pour ajouter un nouveau topic dans cette catégorie -->
 <p>
